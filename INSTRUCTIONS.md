@@ -1,5 +1,7 @@
 # Welcome Group1 to your project phase
 
+Data-Link: https://www.kaggle.com/datasets/sazidthe1/global-electricity-production?resource=download
+
 ## The scenario: Global electricity production
 Your team has been approached by the Global Energy Alliance (GEA), an international non-profit organization focused on promoting sustainable energy policies and fostering energy security worldwide.
 The GEA is preparing its annual 'Global Energy Outlook' report and is particularly interested in understanding the evolving landscape of electricity production across different countries and energy sources. They need data-driven insights to inform their policy recommendations, identify countries making significant strides in renewable energy, and pinpoint areas requiring more investment or policy intervention.
