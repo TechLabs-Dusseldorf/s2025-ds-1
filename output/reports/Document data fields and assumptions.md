@@ -12,7 +12,6 @@ Net Electricity Production | electricity → means total electricity produced (f
 [parameter]   | [product]
 Total Imports | electricity → means electricity imported from another country, not a specific fuel.
 
-
 4 
 | Parameter                  | Meaning                                           | Sign (assumption)     |
 |----------------------------|---------------------------------------------------|-----------------------|
@@ -23,4 +22,5 @@ Total Imports | electricity → means electricity imported from another country,
 | Total Exports              | Electricity exported to other countries.          | – (draws from supply) |
 | Used for pumped storage    | Electricity used to pump water into storage.      | – (draws from supply) |
 
-
+5 
+The entries "Total renewable energy" and "Total combustible fuels" in the [product] column can be used to aggregate all renewable and combustible energy sources respectively, which is useful for analytics and visualization.
