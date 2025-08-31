@@ -74,6 +74,17 @@ def main(path: Optional[str], no_plot: bool, save_plot: Optional[str], save_sola
     renew_totals = renewables_totals(df_clean)
     print("\nRenewables totals across dataset:\n", renew_totals)
 
+  # 5) Plots
+    if not no_plot:
+        # If saving, make sure the parent folder exists
+        for p in [save_plot, save_solar_wind]:
+            if p:
+                Path(p).parent.mkdir(parents=True, exist_ok=True)
+
+        # Yearly totals (single line)
+        plot_yearly_production(yearly, show=True, save_path=save_plot)
+        # Solar vs Wind for the top-5 countries (multi series)
+        plot_solar_wind(df_clean, top5_list, show=True, save_path=save_solar_wind)
 
 
 if __name__ == "__main__":
