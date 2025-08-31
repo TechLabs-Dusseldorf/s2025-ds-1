@@ -1,44 +1,40 @@
-"""
-CLI entry for the electricity production analysis (local CSV).
-Works from any CWD because clean_code resolves the default path
-relative to this file location (py_files/../data/...).
-"""
 from __future__ import annotations
 
 import argparse
 from typing import Optional, List
 
 from clean_code import (
-    load_data,
-    clean_data,
-    get_shape,
-    get_columns,
-    missing_values,
-    get_yearly_production,
-    get_unique_parameters,
-    sum_by_parameter,
-    top_countries,
-    avg_monthly_for_countries,
-    top_products,
-    product_share_over_time,
-    total_renewables_yearly,
-    renewables_totals,
-    plot_yearly_production,
-    renewables_growth_rate,
-    plot_solar_wind,
+    load_data,                 # read CSV (pathlib-resolved default if None)
+    clean_data,                # drop NAs, parse dates, add year
+    get_shape, get_columns, missing_values,
+    get_yearly_production,     # global yearly totals
+    get_unique_parameters,     # list of distinct 'parameter'
+    sum_by_parameter,          # totals by 'parameter'
+    top_countries,             # rank countries by total value
+    avg_monthly_for_countries, # mean value per country (proxy monthly)
+    top_products,              # top-N products by total value
+    product_share_over_time,   # per-year product share %
+    total_renewables_yearly,   # yearly totals for aggregated renewables
+    renewables_totals,         # totals for selected renewable sources
+    plot_yearly_production,    # single-line yearly plot
+    renewables_growth_rate,    # YoY growth calc
+    plot_solar_wind,           # multi-line solar/wind plot
 )
 
 
 def main(path: Optional[str], no_plot: bool, save_plot: Optional[str], save_solar_wind: Optional[str]) -> None:
+    # 1) Load
     df = load_data(path)
 
     print("Rows, Columns:", get_shape(df))
     print("\nColumns:", get_columns(df))
     print("\nMissing values per column:\n", missing_values(df))
 
+    # 3) Clean
     df_clean = clean_data(df)
     print("\nAfter cleaning - Missing values per column:\n", missing_values(df_clean))
 
+    # 4) Aggregations / answers
     yearly = get_yearly_production(df_clean)
     print("\nYearly production (head):\n", yearly.head())
 
@@ -52,9 +48,11 @@ def main(path: Optional[str], no_plot: bool, save_plot: Optional[str], save_sola
     print("\nTop 5 countries by total production:\n", top5)
     top5_list: List[str] = top5.index.tolist()
 
+    # Intermediate analyses
     growth = renewables_growth_rate(df_clean, top5_list)
     if not growth.empty:
         print("\nYoY growth in Total Renewables (head):\n", growth.head())
+        # Average YoY growth across years → country with strongest avg growth
         max_growth_country = growth.groupby("country_name")["YoY Growth (%)"].mean().idxmax()
         print("\nCountry with strongest avg YoY renewable growth:", max_growth_country)
     else:
@@ -76,9 +74,6 @@ def main(path: Optional[str], no_plot: bool, save_plot: Optional[str], save_sola
     renew_totals = renewables_totals(df_clean)
     print("\nRenewables totals across dataset:\n", renew_totals)
 
-    if not no_plot:
-        plot_yearly_production(yearly, show=True, save_path=save_plot)
-        plot_solar_wind(df_clean, top5_list, show=True, save_path=save_solar_wind)
 
 
 if __name__ == "__main__":
